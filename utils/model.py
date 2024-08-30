@@ -32,7 +32,7 @@ def load_model_processor(modelargs: ModelArguments):
 
         model = get_peft_model(model, config)
 
-    elif modelargs.train_type == "none":
+    elif modelargs.train_type == "full":
         logging.warning("Train full model")
 
         pass
