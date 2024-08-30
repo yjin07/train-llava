@@ -1,0 +1,7 @@
+.vscode/
+clip-*
+data/*
+llava*
+LLaVA-CC3M*
+my-model*
+Qwen*
