@@ -20,20 +20,24 @@ echo "host      = $(hostname -s)" >> $FILE
 echo "Directory = $(pwd)" >> $FILE
 echo >> $FILE
 
+nvidia-smi >> $FILE
+free -h >> $FILE
+echo >> $FILE
+
 T1=$(date +%s)
 
 ml conda
 conda activate /blue/amolstad/y.jin/anaconda3/envs/MyNlp
 
-srun deepspeed llava_run.py \
+srun --mpi=pmi2 --exclusive deepspeed llava_run.py \
     --deepspeed ds_zero2_no_offload.json \
-    --model_name_or_path my-model/model-01 \
+    --model_name_or_path /blue/amolstad/y.jin/train-llava/my-model/model-01 \
     --train_type use_lora \
-    --data_path data \
+    --data_path /blue/amolstad/y.jin/train-llava/data \
     --bf16 true \
     --fp16 false \
-    --output_dir Results \
-    --num_train_epochs 10 \
+    --output_dir /blue/amolstad/y.jin/train-llava/Results \
+    --num_train_epochs 5 \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps 8 \
@@ -41,8 +45,7 @@ srun deepspeed llava_run.py \
     --save_strategy "epoch" \
     --save_total_limit 3 \
     --learning_rate 4e-4 \
-    --logging_steps 10 \
-    --model_max_length 2048 >> $FILE
+    --logging_steps 10 >> $FILE
 
 echo >> $FILE
 T2=$(date +%s)

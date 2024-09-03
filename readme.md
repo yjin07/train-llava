@@ -67,4 +67,4 @@ From experience, LoRA tends to yield the best performance across various tasks d
 
 ## Training Process
 
-The training process for the LLava model is conducted using a SLURM script, `run.sh`, which manages the distributed training across multiple GPUs. The training utilizes DeepSpeed with a Zero-2 optimization strategy and runs on four A100 GPUs to efficiently handle large-scale model training.
+The training process for the LLava model is conducted using a SLURM script, `run.sh`, which manages the distributed training across multiple GPUs. The training utilizes DeepSpeed with a Zero-2 optimization strategy and runs on 4 A100 GPUs to efficiently handle large-scale model training.

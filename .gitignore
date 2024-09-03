@@ -6,3 +6,6 @@ LLaVA-CC3M*
 my-model*
 Qwen*
 build_*
+llava_run-v2.py
+*cache*
+Results*
