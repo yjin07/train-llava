@@ -7,7 +7,7 @@ class ModelArguments:
     train_type: Optional[str] = field(
         default="use_lora",
         metadata={
-            "helpe": """
+            "help": """
             1: use_lora: Use LoRA for training
             2: full: full model training
             3. freeze_vision: freeze vision model

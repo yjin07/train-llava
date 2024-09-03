@@ -27,7 +27,7 @@ def load_model_processor(modelargs: ModelArguments):
             lora_dropout=LORA_DROPOUT,
             bias="none",
             task_type="CAUSAL_LM",
-            module_to_save=["multi_modal_projector"]
+            modules_to_save=["multi_modal_projector"]
         )
 
         model = get_peft_model(model, config)

@@ -7,6 +7,7 @@ import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from transformers import AutoProcessor
+from .arguments import DataArguments
 
 llava_model_name_or_path = "my-model/model-01"
 llava_processor = AutoProcessor.from_pretrained(llava_model_name_or_path)
