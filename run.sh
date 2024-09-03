@@ -34,18 +34,20 @@ srun --mpi=pmi2 --exclusive deepspeed llava_run.py \
     --model_name_or_path /blue/amolstad/y.jin/train-llava/my-model/model-01 \
     --train_type use_lora \
     --data_path /blue/amolstad/y.jin/train-llava/data \
+    --resume_from_checkpoint /blue/amolstad/y.jin/train-llava/Results/checkpoint-1000 \
     --bf16 true \
     --fp16 false \
     --output_dir /blue/amolstad/y.jin/train-llava/Results \
     --num_train_epochs 5 \
-    --per_device_train_batch_size 4 \
-    --per_device_eval_batch_size 1 \
+    --per_device_train_batch_size 6 \
+    --per_device_eval_batch_size 12 \
     --gradient_accumulation_steps 8 \
     --evaluation_strategy "no" \
-    --save_strategy "epoch" \
+    --save_strategy "steps" \
     --save_total_limit 3 \
+    --report_to "tensorboard" \
     --learning_rate 4e-4 \
-    --logging_steps 10 >> $FILE
+    --logging_steps 50 >> $FILE
 
 echo >> $FILE
 T2=$(date +%s)

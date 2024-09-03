@@ -1,12 +1,10 @@
 import logging
+import os
 
 import transformers
-from transformers import (
-    Trainer,
-    TrainingArguments,
-)
+from transformers import Trainer
 
-from utils.arguments import DataArguments, ModelArguments
+from utils.arguments import DataArguments, ModelArguments, TrainingArguments
 from utils.data import load_dataset_collator
 from utils.model import load_model_processor
 
@@ -21,6 +19,12 @@ def train():
     model, processor = load_model_processor(model_args)
     train_dataset, data_collator = load_dataset_collator(processor, data_args)
 
+    # 检查 checkpoint_path 是否存在
+    checkpoint_path = training_args.resume_from_checkpoint
+    if checkpoint_path and not os.path.exists(os.path.join(checkpoint_path, "trainer_state.json")):
+        print(f"Checkpoint {checkpoint_path} does not exist or is incomplete. Starting from scratch.")
+        checkpoint_path = None
+
     trainer = Trainer(
         model=model,
         args=training_args,
@@ -29,7 +33,7 @@ def train():
         data_collator=data_collator,
     )
 
-    trainer.train()
+    trainer.train(resume_from_checkpoint=checkpoint_path)
     trainer.save_state()
     trainer.save_model(output_dir=training_args.output_dir)
 
