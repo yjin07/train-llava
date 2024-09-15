@@ -19,7 +19,6 @@ def train():
     model, processor = load_model_processor(model_args)
     train_dataset, data_collator = load_dataset_collator(processor, data_args)
 
-    # 检查 checkpoint_path 是否存在
     checkpoint_path = training_args.resume_from_checkpoint
     if checkpoint_path and not os.path.exists(os.path.join(checkpoint_path, "trainer_state.json")):
         print(f"Checkpoint {checkpoint_path} does not exist or is incomplete. Starting from scratch.")

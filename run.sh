@@ -14,10 +14,13 @@
 #SBATCH --gres=gpu:a100:4
 #SBATCH --time=96:00:00
 
+export MASTER_PORT=29999
+
 FILE="Results/output.txt"
 echo "Date      = $(date)" > $FILE
 echo "host      = $(hostname -s)" >> $FILE
 echo "Directory = $(pwd)" >> $FILE
+echo "MASTER_PORT = $MASTER_PORT" >> $FILE
 echo >> $FILE
 
 nvidia-smi >> $FILE
@@ -28,6 +31,7 @@ T1=$(date +%s)
 
 ml conda
 conda activate /blue/amolstad/y.jin/anaconda3/envs/MyNlp
+
 
 srun --mpi=pmi2 --exclusive deepspeed llava_run.py \
     --deepspeed ds_zero2_no_offload.json \
