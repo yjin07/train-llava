@@ -56,7 +56,6 @@ def build_qai(processor: AutoProcessor, q:str, a:str, image_path:Path) -> dict:
 class LlavaDataset(Dataset):
     def __init__(self, data_dir:str):
         super().__init__()
-
         self.chat_data, self.image_dir = self.build_dataset(data_dir)
 
     def build_dataset(self, data_dir:str) -> tuple[dict, Path]:
