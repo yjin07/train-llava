@@ -19,11 +19,11 @@ class QAIoutput:
     pixel_values: torch.Tensor
 
 
-def build_qai(processor: AutoProcessor, q:str, a:str, image_path:Path) -> dict:
+def build_qai(processor: AutoProcessor, query:str, answer:str, image_path:Path) -> dict:
     # ? 1. instruction or input or question
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": q}
+        {"role": "user", "content": query}
     ]
     prompt = processor.tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
@@ -38,7 +38,7 @@ def build_qai(processor: AutoProcessor, q:str, a:str, image_path:Path) -> dict:
 
     # ? 3. Answer
     a_input_ids = processor.tokenizer(
-        a, 
+        answer, 
         return_tensors="pt",
         padding="longest",
         truncation=True,
@@ -62,9 +62,7 @@ class LlavaDataset(Dataset):
         data_dir = Path(data_dir)
         chat_file = data_dir.joinpath("chat.json")
         image_dir = data_dir.joinpath("images")
-
         chat_data = pd.read_json(chat_file).to_dict(orient='records')
-
         return chat_data, image_dir
 
     def __len__(self):
@@ -75,7 +73,6 @@ class LlavaDataset(Dataset):
         cur_data = self.chat_data[idx]
         human_input = cur_data['conversations'][0]['value']
         gpt_output = cur_data['conversations'][1]['value']
-
         image_file = self.image_dir.joinpath(cur_data['image'])
         
         return (human_input, gpt_output, image_file)
@@ -113,7 +110,7 @@ class TrainLlavaCollator:
         for feature in features:
             qai_output = build_qai(
                 processor=self.processor, 
-                q=feature[0], a=feature[1], image_path=feature[2]
+                query=feature[0], answer=feature[1], image_path=feature[2]
             )
             tmp_input_ids, tmp_labels = self.convert_one_piece(
                 qai_output.q_input_ids, 

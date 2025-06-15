@@ -14,8 +14,9 @@ llm_model = AutoModelForCausalLM.from_pretrained(
 
 llm_tokenizer = AutoTokenizer.from_pretrained(qwen_model_name_or_path)
 
+
 # * Add and test the image token to the tokenizer
-print(llm_tokenizer.encode("<image>"))
+print(llm_tokenizer.encode("<image>"))     # Expect [151646]
 
 # * Get the configuration of the models
 vision_config = clip_model.vision_model.config
